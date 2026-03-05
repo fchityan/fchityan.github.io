@@ -351,6 +351,12 @@
 			gap: 0.8rem;
 		}
 
+		.contact-note {
+			margin: 0;
+			color: var(--muted);
+			max-width: 70ch;
+		}
+
 		.contact-form {
 			display: grid;
 			gap: 0.75rem;
@@ -527,23 +533,13 @@
 
 		<section class="container" id="contact" aria-labelledby="contact-heading">
 			<h2 class="section-title" id="contact-heading">Contact</h2>
-			<p class="section-subtitle">Let’s connect—send me a quick message below and I’ll get back to you soon.</p>
+			<p class="section-subtitle">Let’s connect on GitHub. No email form setup needed.</p>
 			<div class="contact-card">
-				<form class="contact-form" id="contactForm" action="https://formspree.io/f/your-form-id" method="post">
-					<input type="hidden" name="_subject" value="New message from portfolio contact form">
-					<input type="hidden" name="_captcha" value="false">
-					<input type="text" name="name" placeholder="Your Name" required>
-					<input type="email" name="email" placeholder="Your Email" required>
-					<select name="topic" required>
-						<option value="" disabled selected>Select Topic</option>
-						<option value="project-collaboration">Project Collaboration</option>
-						<option value="job-opportunity">Job Opportunity</option>
-						<option value="general-inquiry">General Inquiry</option>
-					</select>
-					<textarea name="message" placeholder="Your Message" required></textarea>
-					<button class="btn btn-primary" type="submit">Send Message</button>
-					<p class="form-status" id="formStatus">Messages are sent securely via Formspree.</p>
-				</form>
+				<div class="contact-links" aria-label="Contact links">
+					<a class="btn btn-primary" href="https://github.com/fchityan" target="_blank" rel="noreferrer">GitHub Profile</a>
+					<a class="btn btn-secondary" href="https://github.com/fchityan/fchityan.github.io/issues/new" target="_blank" rel="noreferrer">Open a GitHub Issue</a>
+				</div>
+				<p class="contact-note">If you want a message form later, you can add one anytime with an email provider or a backend service.</p>
 			</div>
 			<p class="sr-only">Portfolio website footer follows.</p>
 		</section>
@@ -561,8 +557,6 @@
 		const refreshProjectsBtn = document.getElementById("refreshProjectsBtn");
 		const syncMeta = document.getElementById("syncMeta");
 		const readmeSummaryCache = new Map();
-		const contactForm = document.getElementById("contactForm");
-		const formStatus = document.getElementById("formStatus");
 
 		function setProjectsLoading(isLoading) {
 			projectsSpinner.hidden = !isLoading;
@@ -900,36 +894,6 @@
 
 		refreshProjectsBtn.addEventListener("click", () => {
 			loadGitHubProjects();
-		});
-
-		contactForm.addEventListener("submit", async (event) => {
-			event.preventDefault();
-
-			if (contactForm.action.includes("your-form-id")) {
-				formStatus.textContent = "Please replace 'your-form-id' with your real Formspree form ID in index.html.";
-				return;
-			}
-
-			formStatus.textContent = "Sending your message...";
-
-			try {
-				const response = await fetch(contactForm.action, {
-					method: "POST",
-					body: new FormData(contactForm),
-					headers: {
-						Accept: "application/json"
-					}
-				});
-
-				if (!response.ok) {
-					throw new Error("Form submission failed");
-				}
-
-				contactForm.reset();
-				formStatus.textContent = "Thanks! Your message has been sent.";
-			} catch (error) {
-				formStatus.textContent = "Sorry, something went wrong. Please try again.";
-			}
 		});
 
 		document.getElementById("year").textContent = new Date().getFullYear();
