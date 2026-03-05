@@ -533,13 +533,21 @@
 
 		<section class="container" id="contact" aria-labelledby="contact-heading">
 			<h2 class="section-title" id="contact-heading">Contact</h2>
-			<p class="section-subtitle">Let’s connect on GitHub. No email form setup needed.</p>
+			<p class="section-subtitle">Send me a message directly to my inbox.</p>
 			<div class="contact-card">
-				<div class="contact-links" aria-label="Contact links">
-					<a class="btn btn-primary" href="https://github.com/fchityan" target="_blank" rel="noreferrer">GitHub Profile</a>
-					<a class="btn btn-secondary" href="https://github.com/fchityan/fchityan.github.io/issues/new" target="_blank" rel="noreferrer">Open a GitHub Issue</a>
-				</div>
-				<p class="contact-note">If you want a message form later, you can add one anytime with an email provider or a backend service.</p>
+				<form class="contact-form" id="contactForm" onsubmit="handleMailtoSubmit(event)">
+					<input type="text" name="name" placeholder="Your Name" required>
+					<input type="email" name="email" placeholder="Your Email" required>
+					<select name="topic" required>
+						<option value="" disabled selected>Select Topic</option>
+						<option value="Project Collaboration">Project Collaboration</option>
+						<option value="Job Opportunity">Job Opportunity</option>
+						<option value="General Inquiry">General Inquiry</option>
+					</select>
+					<textarea name="message" placeholder="Your Message" required></textarea>
+					<button class="btn btn-primary" type="submit">Send Message</button>
+					<p class="form-status" id="formStatus">Your email client will open to send the message.</p>
+				</form>
 			</div>
 			<p class="sr-only">Portfolio website footer follows.</p>
 		</section>
@@ -897,6 +905,23 @@
 		});
 
 		document.getElementById("year").textContent = new Date().getFullYear();
+
+		function handleMailtoSubmit(event) {
+			event.preventDefault();
+
+			const form = event.target;
+			const name = form.name.value;
+			const email = form.email.value;
+			const topic = form.topic.value;
+			const message = form.message.value;
+
+			const subject = `[${topic}] Message from ${name}`;
+			const body = `From: ${name} (${email})\nTopic: ${topic}\n\n${message}`;
+			const mailtoLink = `mailto:cyfoo@hotmail.sg?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+			window.location.href = mailtoLink;
+		}
+
 		loadGitHubProjects();
 	</script>
 </body>
